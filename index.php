@@ -4,7 +4,7 @@ echo '<a href="readme.html">README</a>' . PHP_EOL;
 echo 'Задание 1.' . PHP_EOL;
 $arr = ['first string', 'second string', 'third string', 'fourth string', 'fifth string',
     'sixth string', 'seventh string', 'eighth string', 'ninth string', 'tenth string'];
-echo task1($arr, true);
+task1($arr, true);
 task1($arr);
 echo PHP_EOL . 'Задание 2.' . PHP_EOL;
 echo task2('/', 123, 0, 65, 76) . PHP_EOL;
