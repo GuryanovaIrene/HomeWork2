@@ -1,4 +1,11 @@
 <?php
+const UNKNOWN_OPERATION = 'Неизвестная операция!!!';
+const DIVISION_BY_ZERO = 'Деление на 0!!!';
+const FIRST_PARAM_IS_NOT_NUMBER = 'Первый параметр не является положительным числом';
+const SECOND_PARAM_IS_NOT_NUMBER = 'Второй параметр не является положительным числом';
+const FILE_IS_NOT_READ = 'Не удалось открыть файл на чтение';
+const FILE_IS_NOT_WRITE = 'Не удалось открыть файл на запись';
+
 function task1($arr, $flag = false) {
     foreach ($arr as $val) {
         echo '<p>' . $val . '</p>';
@@ -9,16 +16,17 @@ function task1($arr, $flag = false) {
 }
 
 function task2($oper) {
+
     if (!($oper == '+' or $oper == '-' or $oper == '*' or $oper == '/')) {
-        return 'Неизвестная операция!!!';
+        return UNKNOWN_OPERATION;
     }
+
     $args = func_get_args();
-    print_r($args);
     array_splice($args, 0, 1);
-    print_r($args);
     $res = $args[0];
     array_splice($args, 0, 1);
-    print_r($args);
+
+    $txt = $oper . ': ';
     foreach ($args as $value) {
         switch ($oper) {
             case '+':
@@ -32,23 +40,35 @@ function task2($oper) {
                 break;
             case '/':
                 if ($value == 0) {
-                    return 'Деление на 0!!!';
+                    return DIVISION_BY_ZERO;
                 }
                 $res = $res / $value;
                 break;
         }
+        $txt .= $value . ', ';
     }
-    return $res;
+
+    return substr($txt, 0, strlen($txt) - 2) . ' = ' . $res;
 }
 
 function task3($n, $m) {
     //  Таблица умножения $n строк $m столбцов
+    $isWrong = false;
     if (!($n > 0)) {
-        return 'Первый параметр не является положительным числом';
+        echo FIRST_PARAM_IS_NOT_NUMBER;
+        $isWrong = true;
     }
     if (!($m > 0)) {
-        return 'Второй параметр не является положительным числом';
+        if ($isWrong) {
+            echo ' и ';
+        }
+        echo SECOND_PARAM_IS_NOT_NUMBER;
+        $isWrong = true;
     }
+    if ($isWrong) {
+        return null;
+    }
+
     // Если ввод данных корректен, формируем таблицу
     echo '
 <table>
@@ -72,43 +92,37 @@ function task3($n, $m) {
     echo '
     </tbody>
 </table>';
-    return 'Параметры введены корректно';
 }
 
 function task4() {
     return date('d.m.Y H:i');
 }
-
 function task5() {
     return mktime(0, 0, 0, 2, 24, 2016);
 }
-
 function task6($str) {
     return str_replace('К', '', $str);
 }
-
 function task7($str) {
     return str_replace('Две', 'Три', $str);
 }
-
 function task8($fileName, $str) {
     //  Создание файла с именем $fileName и запись в файл строки $str
     $f = fopen($fileName,'w');
     if ($f) {
         fwrite($f, $str);
     } else {
-        echo 'Не удалось открыть файл на запись';
+        echo FILE_IS_NOT_WRITE;
     }
     fclose($f);
 }
-
 function task9($fileName) {
     $f = fopen($fileName,'r');
     if ($f) {
         $res = fread($f, filesize($fileName));
         echo $res;
     } else {
-        echo 'Не удалось открыть файл на чтение';
+        echo FILE_IS_NOT_READ;
     }
     fclose($f);
 }
